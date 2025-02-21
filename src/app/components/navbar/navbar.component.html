@@ -1,8 +1,9 @@
 <mat-toolbar color="primary">
+    <span>Home</span>
     <span>Mi Tienda</span>
     <span class="spacer"></span>
-    <button mat-button routerLink="/cart">
-      Carrito ({{ cartItemCount }})
-    </button>
+    <a routerLink="/cart">Ver carrito ({{ totalItems }})</a>
+    
+     
   </mat-toolbar>
 
