@@ -1,0 +1,15 @@
+<div *ngIf="cartItems.length > 0; else emptyCart">
+    <mat-card *ngFor="let item of cartItems">
+      <img mat-card-image [src]="item.image" alt="{{ item.name }}">
+      <mat-card-content>
+        <h3>{{ item.name }}</h3>
+        <p>Precio: ${{ item.price }}</p>
+        <button mat-button (click)="removeFromCart(item)">Eliminar</button>
+      </mat-card-content>
+    </mat-card>
+    <h3>Total: ${{ total }}</h3>
+  </div>
+  
+  <ng-template #emptyCart>
+    <p>El carrito está vacío.</p>
+  </ng-template>

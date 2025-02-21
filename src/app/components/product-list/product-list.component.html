@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="product-grid">
+      <mat-card *ngFor="let product of products" class="product-card">
+        <img mat-card-image [src]="product.image" alt="{{ product.name }}">
+        <mat-card-content>
+          <h3>{{ product.name }}</h3>
+          <p>Precio: ${{ product.price }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="addToCart(product)" >Comprar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  
