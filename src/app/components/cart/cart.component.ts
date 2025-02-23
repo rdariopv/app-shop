@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { MatCardContent } from '@angular/material/card';
-import { Subscription } from 'rxjs'; // Importar Subscription
+//import { Subscription } from 'rxjs'; // Importar Subscription
 
 @Component({
   selector: 'app-cart',
@@ -13,24 +13,25 @@ import { Subscription } from 'rxjs'; // Importar Subscription
 })
 export class CartComponent implements OnInit {
   cartItems: any[] = [];  // Array que almacenará los productos del carrito
-  private cartSubscription: Subscription | undefined;  // Variable para la suscripción
+  //private cartSubscription: Subscription | undefined;  // Variable para la suscripción
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService) {
+    
+  }
 
   ngOnInit(): void {
-   // Suscribirse a los cambios del carrito desde el servicio
-   this.cartSubscription = this.cartService.getCartItems().subscribe((items) => {
-    this.cartItems = items;  // Asignar los items recibidos al array
-  });
-
-  
+  this.cartService.cartItemsSubject$.subscribe(items => {
+      console.log('📦 Productos recibidos en CartComponent:', items); // 🟢 Depuración
+      this.cartItems = items;
+    });
+   
   }
 
   ngOnDestroy(): void {
     // Asegúrate de desuscribirte cuando el componente se destruya
-    if (this.cartSubscription) {
-      this.cartSubscription.unsubscribe();
-    }
+   // if (this.cartSubscription) {
+   //   this.cartSubscription.unsubscribe();
+   // }
   }
   
    // Método para eliminar un producto del carrito

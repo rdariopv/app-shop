@@ -34,6 +34,7 @@ export class ProductListComponent {
 
     // Método para añadir un producto al carrito
   addToCart(product: any): void {
+    console.log('Producto agregado:', product); // 🟢 Depuración
     this.cartService.addToCart(product);
   }
 
