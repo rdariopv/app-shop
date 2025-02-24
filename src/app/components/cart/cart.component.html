@@ -1,22 +1,35 @@
 <div class="cart-container">
-    <h2>Carrito de Compras</h2>
+    <h2>🛒 Tu Carrito</h2>
   
     <!-- Mensaje si el carrito está vacío -->
-    <div *ngIf="cartItems.length === 0">
+    <div *ngIf="cartItems.length === 0" class="empty-cart">
       <p>El carrito está vacío. Agrega productos para verlos aquí.</p>
     </div>
   
     <!-- Si hay productos en el carrito, mostrar la lista -->
     <ul *ngIf="cartItems.length > 0">
-      <li *ngFor="let item of cartItems">
+      <li *ngFor="let item of cartItems"   >
         <div class="cart-item">
           <img [src]="item.image" alt="Imagen del producto" width="50" height="50">
-          <div class="item-info">
+
+          <div class="product-details">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+            <p><strong>Precio:</strong> {{ item.price | currency }}</p>
+            <p><strong>Cantidad:</strong> {{ item.quantity }}</p>
+          </div>
+
+          <!--<div class="item-info">
             <div><strong>{{ item.name }}</strong></div>
             <div>Cantidad: {{ item.quantity }}</div>
             <div>Precio: ${{ item.price }}</div>
           </div>
-          <button (click)="removeItem(item)">Eliminar</button>
+          <button (click)="removeItem(item)">Eliminar</button>-->
+          <div class="cart-actions">
+            <button (click)="increaseQuantity(item)">➕</button>
+            <button (click)="decreaseQuantity(item)">➖</button>
+            <button (click)="removeItem(item)">🗑 Eliminar</button>
+          </div>
         </div>
       </li>
     </ul>

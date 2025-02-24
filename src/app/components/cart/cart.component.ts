@@ -34,6 +34,21 @@ export class CartComponent implements OnInit {
    // }
   }
   
+
+   // Aumentar la cantidad de un producto
+   increaseQuantity(item: any) {
+    item.quantity++;
+    this.cartService.addToCart(item);
+  }
+
+   // Disminuir la cantidad de un producto
+   decreaseQuantity(item: any) {
+    if (item.quantity > 1) {
+      item.quantity--;
+    } else {
+      this.removeItem(item);
+    }
+  }
    // Método para eliminar un producto del carrito
    removeItem(item: any): void {
     this.cartService.removeFromCart(item);
