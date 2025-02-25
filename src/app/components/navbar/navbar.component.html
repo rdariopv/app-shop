@@ -8,7 +8,7 @@
   <!-- Botón para ver el carrito -->
    
   <button mat-button   (click)="goToCart()">
-    <mat-icon>shopping_cart</mat-icon> Ver carrito ({{ totalItems }})
+    <mat-icon>shopping_cart</mat-icon> Ver carrito ({{ cartService.totalItems$ | async }})
   </button>
 </mat-toolbar>
 
