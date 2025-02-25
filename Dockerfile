@@ -1,24 +1,36 @@
-# Etapa 1: Construcción de Angular
-FROM node:18-alpine AS build
+# 🟢 Etapa 1: Construcción de Angular Universal
+FROM node:18 AS build
+
+# Establecer el directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos necesarios
+COPY package.json package-lock.json ./
+
+# Instalar dependencias
+RUN npm install
+
+# Copiar todos los archivos del proyecto
+COPY . .
+
+# Construir la aplicación SSR
+RUN npm run build:ssr
+
+# 🟢 Etapa 2: Configuración del Servidor en Node.js
+FROM node:18 AS server
 
 WORKDIR /app
 
-# Copiar package.json y package-lock.json y luego instalar dependencias
-COPY package.json package-lock.json ./
-RUN npm install
+# Copiar los archivos compilados de la etapa anterior
+COPY --from=build /app/package.json ./
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/server.ts ./
 
-# Copiar el código fuente y construir la aplicación
-COPY . .
-RUN npm run build --configuration=production
+# Instalar solo las dependencias de producción
+RUN npm install --only=production
 
-# Etapa 2: Servidor web Nginx
-FROM nginx:1.23-alpine
+# Exponer el puerto en el que corre el servidor SSR
+EXPOSE 4000
 
-# Copiar los archivos de la aplicación Angular al servidor Nginx
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Exponer el puerto 80
-EXPOSE 80
-
-# Iniciar Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Ejecutar el servidor SSR de Angular
+CMD ["node", "dist/server/main.js"]
