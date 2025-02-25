@@ -17,6 +17,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(private cartService: CartService, private router: Router) {}
 
+  testClick() {
+    console.log("Botón de carrito clickeado");
+  }
+  
   goToCart() {
     this.router.navigateByUrl('/cart');
   }

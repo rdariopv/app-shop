@@ -6,7 +6,8 @@
   <button mat-button routerLink="/">Inicio</button>
 
   <!-- Botón para ver el carrito -->
-  <button mat-button routerLink='/cart'>
+   
+  <button mat-button   (click)="goToCart()">
     <mat-icon>shopping_cart</mat-icon> Ver carrito ({{ totalItems }})
   </button>
 </mat-toolbar>
