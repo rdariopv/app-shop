@@ -3,7 +3,14 @@ import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { MatCardContent } from '@angular/material/card';
 //import { Subscription } from 'rxjs'; // Importar Subscription
-
+interface CartItem {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -12,7 +19,8 @@ import { MatCardContent } from '@angular/material/card';
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
-  cartItems: any[] = [];  // Array que almacenará los productos del carrito
+  cartItems: CartItem[] = [];  // Array que almacenará los productos del carrito
+  totalItems: number = 0;
   //private cartSubscription: Subscription | undefined;  // Variable para la suscripción
 
   constructor(private cartService: CartService) {
@@ -23,7 +31,12 @@ export class CartComponent implements OnInit {
   this.cartService.cartItemsSubject$.subscribe(items => {
       console.log('📦 Productos recibidos en CartComponent:', items); // 🟢 Depuración
       this.cartItems = items;
+      console.log('🛒 Carrito actualizado:', this.cartItems);
     });
+
+
+   
+    this.cartService.totalItems$.subscribe(total => this.totalItems = total);
    
   }
 
@@ -36,33 +49,32 @@ export class CartComponent implements OnInit {
   
 
    // Aumentar la cantidad de un producto
-   increaseQuantity(item: any) {
-    item.quantity++;
+   increaseQuantity(item: CartItem) {
     this.cartService.addToCart(item);
+    
   }
 
    // Disminuir la cantidad de un producto
-   decreaseQuantity(item: any) {
-    if (item.quantity > 1) {
-      item.quantity--;
-    } else {
-      this.removeItem(item);
-    }
+   decreaseQuantity(item: CartItem) {
+    this.cartService.decreaseQuantity(item);
   }
    // Método para eliminar un producto del carrito
-   removeItem(item: any): void {
-    this.cartService.removeFromCart(item);
+   removeItem(item: CartItem): void {
+    this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== item.id);
+    //this.cartService.removeFromCart(item);
   }
 
-  removeFromCart(item: any): void {
+  removeFromCart(item: CartItem): void {
     this.cartService.removeFromCart(item); // Llama al servicio para eliminar el producto
     this.ngOnInit(); // Recarga los datos del carrito
   }
 
   // Método para calcular el total (opcional)
   getTotalPrice(): number {
-    return this.cartItems.reduce((total, item) => total + item.price, 0);
+    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+   // return this.cartItems.reduce((total, item) => total + item.price, 0);
   }
 
 
 }
+

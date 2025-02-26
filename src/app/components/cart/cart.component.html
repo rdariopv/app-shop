@@ -15,6 +15,7 @@
           <div class="product-details">
             <h3>{{ item.name }}</h3>
             <p>{{ item.description }}</p>
+            <p><strong>Id:</strong> {{ item.id }}</p>
             <p><strong>Precio:</strong> {{ item.price | currency }}</p>
             <p><strong>Cantidad:</strong> {{ item.quantity }}</p>
           </div>
@@ -28,7 +29,7 @@
           <div class="cart-actions">
             <button (click)="increaseQuantity(item)">➕</button>
             <button (click)="decreaseQuantity(item)">➖</button>
-            <button (click)="removeItem(item)">🗑 Eliminar</button>
+            <button (click)="removeFromCart(item)">🗑 Eliminar</button>
           </div>
         </div>
       </li>
